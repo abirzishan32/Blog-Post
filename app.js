@@ -22,9 +22,7 @@ app.set('view engine', 'ejs');
 
 app.use('/', require('./server/routes/main'));
 
-app.post("/register", (req, res) => {
-    
-});
+
 
 
 
