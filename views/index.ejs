@@ -1,28 +1,35 @@
 <div class="author">
-    <h1 class="author__heading">Hi, I am Abir.</h1>
-    <p class="author__body">I am a student and Web developer.</p>
-  </div>
+  <h1 class="author__heading">Hi, I am Abir.</h1>
+  <p class="author__body">I am a student and Web developer.</p>
+</div>
+
+<img src="/img/profile.jpeg" alt="person looking out through window" class="hero-image" width="981" height="528">
+
+<section class="articles">
+  <h2 class="articles__heading">Latest Posts</h2>
+
+  <ul class="article-ul">
+
+    <% data.forEach(post => { %>
+    <li>
+      <a href="/post/<%= post._id %>">
+        <span><%= post.title %> </span>
+        <span class="article-list__date"> <%= post.createdAt %> </span>
+      </a>
+    </li>
+    <% }) %>
+
+  </ul>
+
+
+  <% if (nextPage !== null) { %>
+    <a href="/?page=<% nextPage %>" class="pagination"> &lt; View Older Posts</a>
+  <% } %>
+
   
-  <img src="/img/profile.jpeg" alt="person looking out through window" class="hero-image" width="981" height="528">
-  
-  <section class="articles">
-    <h2 class="articles__heading">Latest Posts</h2>
-  
-    <ul class="article-ul">
-      
-        <li>
-          <a href="">
-            <span>Post Title </span>
-            <span class="article-list__date">Date</span>
-          </a>
-        </li>
-    </ul>
-  
-  
-    <a href="#" class="pagination"> &lt; All Posts</a>
-  
-    
-  
-  
-  
-  </section>
+
+
+
+
+
+</section>
