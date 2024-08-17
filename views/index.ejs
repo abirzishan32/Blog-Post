@@ -12,13 +12,12 @@
 
     <% data.forEach(post => { %>
     <li>
-      <a href="/post/<%= post._id %>">
+      <a href="/post/<%= post._id %>" >   <%# This link goes to post and then we pass the id of the blog post. %>
         <span><%= post.title %> </span>
         <span class="article-list__date"> <%= post.createdAt %> </span>
       </a>
     </li>
     <% }) %>
-
   </ul>
 
 
@@ -26,7 +25,13 @@
     <a href="/?page=<% nextPage %>" class="pagination"> &lt; View Older Posts</a>
   <% } %>
 
+  <%# The ?page= part tells the server that you're including a query string with a parameter named page. %>
+
+
+
+
   
+
 
 
 
