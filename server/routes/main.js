@@ -1,10 +1,20 @@
-const express = require('express');
-const router = express.Router();
-const Post = require('../models/posts');
+const express = require('express');  // Import the express module
+const router = express.Router(); // Create a new router object
+const Post = require('../models/posts');  // Import the Post model
 
 
 
-router.get('', async (req, res) => {  
+/*
+router.get('', async (req, res) => { ... }) is part of an Express.js application and is used to define
+ a route handler for HTTP GET requests.
+*/
+
+router.get('', async (req, res) => {   /*
+                                        async is a keyword used in JavaScript to define an asynchronous function.
+                                        When a function is marked as async, it can use the await keyword inside its body.
+                                         This allows the function to pause execution at an await expression until a Promise is resolved,
+                                          and then resume execution with the resolved value.
+                                        */
     try {
 
         const locals = {
@@ -118,4 +128,4 @@ router.get('/post/:id', async (req, res) => {  /* a route that handles GET reque
 
 
 
-module.exports = router;
+module.exports = router; // Export the router object to make it available to other parts of the application.
