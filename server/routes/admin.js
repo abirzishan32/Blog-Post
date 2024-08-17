@@ -126,6 +126,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => { //We will add mid
 /**
  * GET /
  * Admin - Create New Post
+ * The GET method is used to display the form that allows an admin to create a new post.
 */
 router.get('/add-post', authMiddleware, async (req, res) => {
   try {
@@ -145,6 +146,33 @@ router.get('/add-post', authMiddleware, async (req, res) => {
   }
 
 });
+
+
+/**
+ * POST /
+ * Admin - Create New Post
+ * The POST method is used to submit the data entered in
+ *  the form and save the new post to the database.
+*/
+router.post('/add-post', authMiddleware, async (req, res) => {
+  try { 
+    try {
+      const newPost = new Post({
+        title: req.body.title,
+        content: req.body.body
+      });
+
+      await Post.create(newPost);
+      res.redirect('/dashboard');
+    } catch (error) {
+      console.log(error);
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 
 
 
