@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 3000;
 //Connecting to Database
 connectDB();
 
+app.use(express.urlencoded({ extended: true })); //Parse URL-encoded bodies
+app.use(express.json()); //Used to parse JSON bodies
+
 
 app.use(express.static('public'));
 

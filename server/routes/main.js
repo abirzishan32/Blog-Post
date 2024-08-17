@@ -81,5 +81,41 @@ router.get('/post/:id', async (req, res) => {  /* a route that handles GET reque
 
 
 
+  router.post('/search', async (req, res) => {  /* A route that handles POST requests to the /search URL.
+                                                    This route is typically triggered when a user submits a search form on your website. */
+    try {
+      const locals = {
+        title: "Seach",
+        description: "Simple Blog created with NodeJs, Express & MongoDb."
+      }
+  
+      let searchTerm = req.body.searchTerm; /* This line retrieves the user's search query from the form submission. req.body.searchTerm captures
+                                                 the value of the searchTerm input field from the form. */
+
+      const searchNoSpecialChar = searchTerm
+      .replace(/[^a-zA-Z0-9 ]/g, "")  /* removes any special characters from the search term. It uses a regular expression to replace any characters that are 
+                                                                            not letters, numbers, or spaces with an empty string. */
+  
+      const data = await Post.find({
+        $or: [
+          { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
+          { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
+        ]
+      });
+  
+      res.render("search", {
+        data,
+        locals,
+        currentRoute: '/'
+      });
+  
+    } catch (error) {
+      console.log(error);
+    }
+  
+  });
+
+
+
 
 module.exports = router;
