@@ -19,7 +19,7 @@ const authMiddleware = (req, res, next ) => {  // We will use the middleware to 
   const token = req.cookies.token;
 
   if(!token) { // if there is no token return 401 unauthorized
-    return res.status(401).json( { message: 'Unauthorized'} ); 
+    return res.redirect('/unauthorized');
   }
 
   try {
@@ -40,7 +40,7 @@ const authMiddleware = (req, res, next ) => {  // We will use the middleware to 
                 or route handler in the stack.
               */
   } catch(error) {
-    res.status(401).json( { message: 'Unauthorized'} );
+    return res.redirect('/unauthorized');
   }
 }
 
@@ -84,7 +84,7 @@ router.post('/admin', async (req, res) => {
 
     const token = jwt.sign({ userId: user._id}, jwtSecret );
     res.cookie('token', token, { httpOnly: true });
-    res.redirect('/dashboard');
+    res.redirect('/');
 
   } 
   catch (error) {
@@ -277,6 +277,13 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
+
+/**
+ * Unauthorized
+ */
+router.get('/unauthorized', (req, res) => {
+  res.render('admin/unauthorized');
+});
 
 
 
