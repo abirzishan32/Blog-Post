@@ -24,7 +24,7 @@ router.get('', async (req, res) => {   /*
 
 
         //Pagination
-        let perPage = 10; // Number of posts per page
+        let perPage = 5; // Number of posts per page
         let page = req.query.page || 1; // Query string for page number, if not provided, default to 1
 
 

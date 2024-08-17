@@ -95,6 +95,31 @@ router.post('/admin', async (req, res) => {
 
 
 /**
+ * Admin - Register
+*/
+router.post('/register', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    try {
+      const user = await User.create({ username, password:hashedPassword });
+      res.status(201).json({ message: 'User Created', user });
+    } catch (error) {
+      if(error.code === 11000) {
+        res.status(409).json({ message: 'User already in use'});
+      }
+      res.status(500).json({ message: 'Internal server error'})
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
+
+/**
  * GET /
  * Admin Dashboard
 */
@@ -173,35 +198,89 @@ router.post('/add-post', authMiddleware, async (req, res) => {
   }
 });
 
+/**
+ * PUT /
+ * Admin - Edit Post
+ * This route handles the actual updating of the post in the
+ *  database after the admin submits the edited form.
+*/
+router.put('/edit-post/:id', authMiddleware, async (req, res) => {
+  try {
 
+    await Post.findByIdAndUpdate(req.params.id, {
+      title: req.body.title,
+      content: req.body.body,
+      updatedAt: Date.now()
+    });
 
+    res.redirect(`/dashboard`);
 
+  } catch (error) {
+    console.log(error);
+  }
 
-
+});
 
 
 /**
- * Admin - Register
+ * GET /
+ * Admin - Edit Post
+ * This route handles the display of the form where an
+ *  admin can edit an existing post.
 */
-// router.post('/register', async (req, res) => {
-//   try {
-//     const { username, password } = req.body;
-//     const hashedPassword = await bcrypt.hash(password, 10);
+router.get('/edit-post/:id', authMiddleware, async (req, res) => {
+  try {
 
-//     try {
-//       const user = await User.create({ username, password:hashedPassword });
-//       res.status(201).json({ message: 'User Created', user });
-//     } catch (error) {
-//       if(error.code === 11000) {
-//         res.status(409).json({ message: 'User already in use'});
-//       }
-//       res.status(500).json({ message: 'Internal server error'})
-//     }
+    const locals = {
+      title: "Edit Post",
+      description: "Free NodeJs User Management System",
+    };
 
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+    const data = await Post.findOne({ _id: req.params.id });
+
+    res.render('admin/edit-post', {
+      locals,
+      data,
+      layout: adminLayout
+    })
+
+  } catch (error) {
+    console.log(error);
+  }
+
+});
+
+
+/**
+ * DELETE /
+ * Admin - Delete Post
+*/
+router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
+
+  try {
+    await Post.deleteOne( { _id: req.params.id } );
+    res.redirect('/dashboard');
+  } catch (error) {
+    console.log(error);
+  }
+
+});
+
+
+/**
+ * GET /
+ * Admin Logout
+*/
+router.get('/logout', (req, res) => {
+  res.clearCookie('token');
+  //res.json({ message: 'Logout successful.'});
+  res.redirect('/');
+});
+
+
+
+
+
 
 
 module.exports = router;

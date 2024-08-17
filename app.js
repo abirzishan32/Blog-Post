@@ -6,6 +6,7 @@ const connectDB = require('./server/config/db');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const mongoStore = require('connect-mongo');
+const methodOverride = require('method-override');
 
 
 const app = express();
@@ -18,6 +19,7 @@ connectDB();
 app.use(express.urlencoded({ extended: true })); //Parse URL-encoded bodies
 app.use(express.json()); //Used to parse JSON bodies
 app.use(cookieParser());
+app.use(methodOverride('_method'));
 
 app.use(session({
     secret: 'meow meow',
